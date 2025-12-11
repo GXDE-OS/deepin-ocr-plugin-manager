@@ -392,9 +392,13 @@ void PaddleOCRApp::rec(const std::vector<cv::Mat> &detectImg)
         if(recNet->opt.use_vulkan_compute) {
             //当可用线程 > 1 同时不是第 1 个线程时，使用CPU进行计算
             //即确保显卡只处理单次的推理
-            if(maxThreadsUsed > 1 && i % maxThreadsUsed != 1) {
+#if defined(_loongarch) || defined(__loongarch__) || defined(__loongarch64)
+            extractor.set_vulkan_compute(false);
+#else
+            if (maxThreadsUsed > 1 && i % maxThreadsUsed != 1) {
                 extractor.set_vulkan_compute(false);
             }
+#endif
         }
 
         extractor.input(0, input);

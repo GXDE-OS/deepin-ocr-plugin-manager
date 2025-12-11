@@ -1,4 +1,3 @@
-// 
 #include <deepinocrplugin.h>
 #include <deepinocrplugin_p.h>
 #include <toolkits.h>
